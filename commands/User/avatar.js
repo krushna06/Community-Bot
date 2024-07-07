@@ -1,4 +1,4 @@
-const { SlashCommandBuilder } = require('discord.js');
+const { SlashCommandBuilder, EmbedBuilder } = require('discord.js');
 
 module.exports = {
     data: new SlashCommandBuilder()
@@ -7,6 +7,11 @@ module.exports = {
         .addUserOption(option => option.setName('target').setDescription('The user\'s avatar to show')),
     async execute(interaction) {
         const user = interaction.options.getUser('target') || interaction.user;
-        await interaction.reply(`${user.username}'s avatar: ${user.displayAvatarURL({ dynamic: true })}`);
+
+        const embed = new EmbedBuilder()
+            .setTitle(`${user.username}'s Avatar`)
+            .setImage(user.displayAvatarURL({ dynamic: true }));
+
+        await interaction.reply({ embeds: [embed] });
     },
 };
