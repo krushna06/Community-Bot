@@ -1,6 +1,7 @@
 const { Client, Collection, GatewayIntentBits, REST, Routes } = require('discord.js');
 const fs = require('fs');
 const path = require('path');
+const express = require('express');
 const { token, clientId } = require('./config/config.json');
 const logger = require('./utils/logger');
 
@@ -55,4 +56,16 @@ const rest = new REST({ version: '10' }).setToken(token);
 
 client.login(token).then(() => {
     logger.info(`Logged in as ${client.user.tag}`);
+});
+
+// Set up the Express server
+const app = express();
+const port = 3000;
+
+// Use the stats route
+const statsRoute = require('./api/v1/stats');
+app.use('/api/v1', statsRoute);
+
+app.listen(port, () => {
+    logger.info(`API server running on http://localhost:${port}`);
 });
