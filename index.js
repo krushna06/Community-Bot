@@ -1,7 +1,7 @@
-const { Client, Collection, GatewayIntentBits } = require('discord.js');
+const { Client, Collection, GatewayIntentBits, REST, Routes } = require('discord.js');
 const fs = require('fs');
 const path = require('path');
-const { token } = require('./config/config.json');
+const { token, clientId } = require('./config/config.json');
 
 const client = new Client({ intents: [GatewayIntentBits.Guilds] });
 
@@ -23,13 +23,33 @@ loadEvents('./events/guild');
 
 // Load commands
 client.commands = new Collection();
+const commands = [];
 const commandFolders = fs.readdirSync('./commands');
+
 for (const folder of commandFolders) {
     const commandFiles = fs.readdirSync(`./commands/${folder}`).filter(file => file.endsWith('.js'));
     for (const file of commandFiles) {
         const command = require(`./commands/${folder}/${file}`);
         client.commands.set(command.data.name, command);
+        commands.push(command.data.toJSON());
     }
 }
+
+const rest = new REST({ version: '10' }).setToken(token);
+
+(async () => {
+    try {
+        console.log('Started refreshing application (/) commands.');
+
+        await rest.put(
+            Routes.applicationCommands(clientId),
+            { body: commands },
+        );
+
+        console.log('Successfully reloaded application (/) commands.');
+    } catch (error) {
+        console.error(error);
+    }
+})();
 
 client.login(token);
