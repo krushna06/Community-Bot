@@ -28,7 +28,7 @@ module.exports = {
 
             if (page === 0) {
                 embed.setTitle('Help Menu')
-                    .setDescription(`Total Commands: ${totalCommands}`)
+                    .setDescription(`:grey_question: **Help**\n > Use the menu, or use the buttons to view commands based on their category!\n\n <:botflag:990984150808952883> __**Info about me:**__\n <:CR:1249870941878620252> I'm a community bot.\n <:CR:1249870941878620252> My job is to make life easier for admins & mods.\n <:CE:1249870944751714367> Total Commands: ${totalCommands}`)
                     .setFooter({ text: `Page 1 of ${totalPages}` });
             } else {
                 const category = categories[page - 1];
@@ -60,7 +60,11 @@ module.exports = {
                         .setCustomId('next')
                         .setLabel('Next')
                         .setStyle(ButtonStyle.Primary)
-                        .setDisabled(currentPage === totalPages - 1)
+                        .setDisabled(currentPage === totalPages - 1),
+                    new ButtonBuilder()
+                        .setLabel('Invite')
+                        .setStyle(ButtonStyle.Link)
+                        .setURL('https://discord.com/oauth2/authorize?client_id=1047853733431738418&permissions=8&scope=bot')
                 );
 
             return row;
