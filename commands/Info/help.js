@@ -1,4 +1,4 @@
-const { SlashCommandBuilder, EmbedBuilder, ActionRowBuilder, ButtonBuilder, ButtonStyle } = require('discord.js');
+const { SlashCommandBuilder, EmbedBuilder, ActionRowBuilder, ButtonBuilder, ButtonStyle, StringSelectMenuBuilder } = require('discord.js');
 const fs = require('fs');
 
 module.exports = {
@@ -66,9 +66,27 @@ module.exports = {
             return row;
         };
 
-        await interaction.reply({ embeds: [generateEmbed(currentPage)], components: [generateActionRow()] });
+        const generateSelectMenu = () => {
+            const menu = new StringSelectMenuBuilder()
+                .setCustomId('select')
+                .setPlaceholder('Select a category')
+                .addOptions(
+                    { label: 'Summary', value: '0' },
+                    ...categories.map((category, index) => ({
+                        label: category.name,
+                        value: (index + 1).toString()
+                    }))
+                );
 
-        const filter = i => i.customId === 'previous' || i.customId === 'home' || i.customId === 'next';
+            return new ActionRowBuilder().addComponents(menu);
+        };
+
+        await interaction.reply({ 
+            embeds: [generateEmbed(currentPage)], 
+            components: [generateActionRow(), generateSelectMenu()] 
+        });
+
+        const filter = i => ['previous', 'home', 'next', 'select'].includes(i.customId);
         const collector = interaction.channel.createMessageComponentCollector({ filter, time: 60000 });
 
         collector.on('collect', async i => {
@@ -78,9 +96,14 @@ module.exports = {
                 currentPage++;
             } else if (i.customId === 'home') {
                 currentPage = 0;
+            } else if (i.customId === 'select') {
+                currentPage = parseInt(i.values[0]);
             }
 
-            await i.update({ embeds: [generateEmbed(currentPage)], components: [generateActionRow()] });
+            await i.update({ 
+                embeds: [generateEmbed(currentPage)], 
+                components: [generateActionRow(), generateSelectMenu()] 
+            });
         });
 
         collector.on('end', collected => {
