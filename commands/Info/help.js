@@ -1,8 +1,6 @@
 const { SlashCommandBuilder, EmbedBuilder, ActionRowBuilder, ButtonBuilder, ButtonStyle } = require('discord.js');
 const fs = require('fs');
 
-const ITEMS_PER_PAGE = 5;
-
 module.exports = {
     data: new SlashCommandBuilder()
         .setName('help')
@@ -21,21 +19,26 @@ module.exports = {
         }
 
         const totalCommands = categories.reduce((acc, category) => acc + category.commands.length, 0);
-        const totalPages = Math.ceil(totalCommands / ITEMS_PER_PAGE);
+        const totalCategories = categories.length;
+        const totalPages = totalCategories + 1;
         let currentPage = 0;
 
         const generateEmbed = (page) => {
-            const embed = new EmbedBuilder()
-                .setTitle('Help Menu')
-                .setDescription(`Total Commands: ${totalCommands}`)
-                .setFooter({ text: `Page ${page + 1} of ${totalPages}` });
+            const embed = new EmbedBuilder();
 
-            const start = page * ITEMS_PER_PAGE;
-            const end = start + ITEMS_PER_PAGE;
-            const commandsToShow = categories.flatMap(category => category.commands).slice(start, end);
+            if (page === 0) {
+                embed.setTitle('Help Menu')
+                    .setDescription(`Total Commands: ${totalCommands}`)
+                    .setFooter({ text: `Page 1 of ${totalPages}` });
+            } else {
+                const category = categories[page - 1];
+                embed.setTitle(`Help Menu - ${category.name}`)
+                    .setDescription(`Commands in ${category.name}`)
+                    .setFooter({ text: `Page ${page + 1} of ${totalPages}` });
 
-            for (const command of commandsToShow) {
-                embed.addFields({ name: `/${command.name}`, value: command.description });
+                for (const command of category.commands) {
+                    embed.addFields({ name: `/${command.name}`, value: command.description });
+                }
             }
 
             return embed;
