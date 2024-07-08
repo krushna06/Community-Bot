@@ -16,7 +16,10 @@ module.exports = {
         for (const role of roles) {
             await member.roles.add(role);
         }
-        
-        await interaction.reply(`Added roles to ${user.tag}`);
+
+        await interaction.reply({
+            content: `Added roles to ${user.tag}`,
+            ephemeral: true,
+        });
     },
 };

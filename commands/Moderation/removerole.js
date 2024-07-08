@@ -17,6 +17,6 @@ module.exports = {
             await member.roles.remove(role);
         }
         
-        await interaction.reply(`Removed roles from ${user.tag}`);
+        await interaction.reply({ content: `Removed roles from ${user.tag}`, ephemeral: true });
     },
 };

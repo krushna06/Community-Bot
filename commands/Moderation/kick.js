@@ -7,10 +7,10 @@ module.exports = {
         .addUserOption(option => option.setName('target').setDescription('The user to kick').setRequired(true)),
     async execute(interaction) {
         const member = interaction.options.getMember('target');
-        if (!member) return interaction.reply('That user is not in the server!');
-        if (!member.kickable) return interaction.reply('I cannot kick this user!');
+        if (!member) return interaction.reply({ content: 'That user is not in the server!', ephemeral: true });
+        if (!member.kickable) return interaction.reply({ content: 'I cannot kick this user!', ephemeral: true });
 
         await member.kick();
-        await interaction.reply(`${member.user.tag} has been kicked!`);
+        await interaction.reply({ content: `${member.user.tag} has been kicked!`, ephemeral: true });
     },
 };

@@ -7,6 +7,6 @@ module.exports = {
     async execute(interaction) {
         const channel = interaction.channel;
         await channel.permissionOverwrites.edit(interaction.guild.id, { SEND_MESSAGES: false });
-        await interaction.reply(`Locked ${channel.name}`);
+        await interaction.reply({ content: `Locked ${channel.name}`, ephemeral: true });
     },
 };

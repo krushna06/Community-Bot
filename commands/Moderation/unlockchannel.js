@@ -7,6 +7,6 @@ module.exports = {
     async execute(interaction) {
         const channel = interaction.channel;
         await channel.permissionOverwrites.edit(interaction.guild.id, { SEND_MESSAGES: true });
-        await interaction.reply(`Unlocked ${channel.name}`);
+        await interaction.reply({ content: `Unlocked ${channel.name}`, ephemeral: true });
     },
 };

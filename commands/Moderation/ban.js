@@ -12,6 +12,6 @@ module.exports = {
         const member = interaction.guild.members.cache.get(user.id);
 
         await member.ban({ reason });
-        await interaction.reply(`Banned ${user.tag} for: ${reason}`);
+        await interaction.reply({ content: `Banned ${user.tag} for: ${reason}`, ephemeral: true });
     },
 };

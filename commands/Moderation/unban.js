@@ -9,6 +9,6 @@ module.exports = {
         const user = interaction.options.getUser('user');
 
         await interaction.guild.members.unban(user.id);
-        await interaction.reply(`Unbanned ${user.tag}`);
+        await interaction.reply({ content: `Unbanned ${user.tag}`, ephemeral: true });
     },
 };

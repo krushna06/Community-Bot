@@ -14,6 +14,6 @@ module.exports = {
             await role.delete();
         }
         
-        await interaction.reply(`Deleted selected roles.`);
+        await interaction.reply({ content: `Deleted selected roles.`, ephemeral: true });
     },
 };

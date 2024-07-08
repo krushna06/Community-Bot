@@ -10,6 +10,6 @@ module.exports = {
         const member = interaction.guild.members.cache.get(user.id);
 
         await member.timeout(null);
-        await interaction.reply(`Removed timeout from ${user.tag}`);
+        await interaction.reply({ content: `Removed timeout from ${user.tag}`, ephemeral: true });
     },
 };

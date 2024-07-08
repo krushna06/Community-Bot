@@ -8,6 +8,6 @@ module.exports = {
     async execute(interaction) {
         const seconds = interaction.options.getInteger('seconds');
         await interaction.channel.setRateLimitPerUser(seconds);
-        await interaction.reply(`Set slowmode to ${seconds} seconds.`);
+        await interaction.reply({ content: `Set slowmode to ${seconds} seconds.`, ephemeral: true });
     },
 };

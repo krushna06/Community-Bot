@@ -8,6 +8,6 @@ module.exports = {
     async execute(interaction) {
         const roleName = interaction.options.getString('name');
         const role = await interaction.guild.roles.create({ name: roleName });
-        await interaction.reply(`Created role ${role.name}`);
+        await interaction.reply({ content: `Created role ${role.name}`, ephemeral: true });
     },
 };

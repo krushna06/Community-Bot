@@ -14,6 +14,6 @@ module.exports = {
         const member = interaction.guild.members.cache.get(user.id);
 
         await member.timeout(duration * 60 * 1000, reason);
-        await interaction.reply(`Timed out ${user.tag} for ${duration} minutes. Reason: ${reason}`);
+        await interaction.reply({ content: `Timed out ${user.tag} for ${duration} minutes. Reason: ${reason}`, ephemeral: true });
     },
 };
