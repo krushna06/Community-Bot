@@ -1,5 +1,6 @@
 import { useState, useEffect } from 'react';
 import Link from 'next/link';
+import config from '../../config.json';
 
 const About = () => {
   const [totalCommands, setTotalCommands] = useState(null);
@@ -8,7 +9,7 @@ const About = () => {
   useEffect(() => {
     const fetchStats = async () => {
       try {
-        const response = await fetch('https://3000-krushna06-communitybot-bzxbi6ke8oa.ws-us115.gitpod.io/api/v1/stats');
+        const response = await fetch(`${config.base_api_url}/stats`);
         if (!response.ok) {
           throw new Error('Failed to fetch data');
         }
