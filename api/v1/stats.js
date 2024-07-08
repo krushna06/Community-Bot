@@ -5,12 +5,15 @@ const path = require('path');
 const router = express.Router();
 
 const getCommandDetails = (dir) => {
+    let totalCount = 0;
     const commandDetails = [];
     const commandFolders = fs.readdirSync(dir);
 
     for (const folder of commandFolders) {
         const commandFiles = fs.readdirSync(path.join(dir, folder)).filter(file => file.endsWith('.js'));
         const commands = commandFiles.map(file => path.basename(file, '.js'));
+        totalCount += commands.length;
+
         if (commands.length > 0) {
             commandDetails.push({
                 category: folder,
@@ -18,12 +21,12 @@ const getCommandDetails = (dir) => {
             });
         }
     }
-    return commandDetails;
+    return { totalCount, commandDetails };
 };
 
 router.get('/commands', (req, res) => {
-    const commandDetails = getCommandDetails(path.join(__dirname, '../../commands'));
-    res.json({ commandDetails });
+    const { totalCount, commandDetails } = getCommandDetails(path.join(__dirname, '../../commands'));
+    res.json({ totalCount, commandDetails });
 });
 
 module.exports = router;
