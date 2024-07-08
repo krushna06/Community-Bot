@@ -8,10 +8,12 @@ import config from '../../config.json';
 export default function Commands() {
   const [commandDetails, setCommandDetails] = useState([]);
 
+  const baseApiUrl = process.env.NEXT_PUBLIC_BASE_API_URL || config.base_api_url;
+
   useEffect(() => {
     const fetchCommands = async () => {
       try {
-        const response = await fetch(`${config.base_api_url}/commands`);
+        const response = await fetch(`${baseApiUrl}/commands`);
         if (!response.ok) {
           throw new Error('Failed to fetch data');
         }
@@ -23,7 +25,7 @@ export default function Commands() {
     };
 
     fetchCommands();
-  }, []);
+  }, [baseApiUrl]);
 
   return (
     <motion.div

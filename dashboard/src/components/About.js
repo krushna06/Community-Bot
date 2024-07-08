@@ -6,10 +6,13 @@ const About = () => {
   const [totalCommands, setTotalCommands] = useState(null);
   const [totalServers, setTotalServers] = useState(null);
 
+  // Read the base API URL from environment variables, or use config.json as fallback
+  const baseApiUrl = process.env.NEXT_PUBLIC_BASE_API_URL || config.base_api_url;
+
   useEffect(() => {
     const fetchStats = async () => {
       try {
-        const response = await fetch(`${config.base_api_url}/stats`);
+        const response = await fetch(`${baseApiUrl}/stats`);
         if (!response.ok) {
           throw new Error('Failed to fetch data');
         }
@@ -22,7 +25,7 @@ const About = () => {
     };
 
     fetchStats();
-  }, []);
+  }, [baseApiUrl]);
 
   return (
     <>
