@@ -28,7 +28,7 @@ const Navbar = () => {
             <li>
               <Link
                 className="p-color"
-                href="https://github.com/krushna06/Community-Bot/tree/main/website"
+                href="https://github.com/krushna06/Community-Bot/tree/main/dashboard"
                 target="_blank"
               >
                 Source Code
