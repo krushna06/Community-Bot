@@ -71,7 +71,7 @@ export default function Commands() {
               </div>
             ))
           ) : (
-            <p>Loading commands...</p>
+            <p style={{ color: 'white' }}>Loading commands...</p>
           )}
           <input type="radio" name="accordion" id="acc-close" />
         </nav>
