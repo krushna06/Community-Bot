@@ -2,7 +2,7 @@ const { Client, Collection, GatewayIntentBits, REST, Routes } = require('discord
 const fs = require('fs');
 const path = require('path');
 const express = require('express');
-const { token, clientId } = require('./config/config.json');
+const { token, clientId, REST_API } = require('./config/config.json');
 const logger = require('./utils/logger');
 
 const client = new Client({ intents: [GatewayIntentBits.Guilds] });
@@ -58,14 +58,16 @@ client.login(token).then(() => {
     logger.info(`Logged in as ${client.user.tag}`);
 });
 
-// Set up the Express server
-const app = express();
-const port = 3000;
+if (REST_API) {
+    // Set up the Express server
+    const app = express();
+    const port = 3000;
 
-// Use the stats route
-const statsRoute = require('./api/v1/stats');
-app.use('/api/v1', statsRoute);
+    // Use the stats route
+    const statsRoute = require('./api/v1/stats');
+    app.use('/api/v1', statsRoute);
 
-app.listen(port, () => {
-    logger.info(`API server running on http://localhost:${port}`);
-});
+    app.listen(port, () => {
+        logger.info(`API server running on http://localhost:${port}`);
+    });
+}

@@ -1,4 +1,5 @@
 {
   "token": "YOUR_BOT_TOKEN",
-  "clientId": "YOUR_CLIENT_ID"
+  "clientId": "YOUR_CLIENT_ID",
+  "REST_API": true
 }
