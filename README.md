@@ -10,6 +10,7 @@
     - [Example Request](#example-request)
     - [Example Response](#example-response)
     - [Example Using Postman](#example-using-postman)
+- [Dashboard Setup Instructions](#dashboard-setup-instructions)
 - [Contributing](#contributing)
 - [Issues](#issues)
 - [License](#license)
@@ -21,19 +22,19 @@ The Discord Community Bot is designed to make community management easier for se
 To set up the Discord Community Bot, follow these steps:
 
 1. **Clone the Repository:**
-   ```
+   ```sh
    git clone https://github.com/krushna06/Community-Bot
    ```
    
 2. **Install Dependencies:**
-   ```
+   ```sh
    npm install
    ```
 
 3. **Rename** `example.config.json` to `config.json` and fill it inside the `config` folder.
 
 4. **Start the Bot:**
-   ```
+   ```sh
    node index.js
    ```
 
@@ -54,42 +55,45 @@ http://localhost:3000/api/v1
 ### Fetching API Data
 
 ```javascript
-const http = require('http');
+const express = require('express');
+const cors = require('cors');
+const fs = require('fs');
+const path = require('path');
 
-// Define the API endpoint
-const options = {
-    hostname: 'localhost',
-    port: 3000,
-    path: '/api/v1/commands',
-    method: 'GET'
+const router = express.Router();
+
+router.use(cors());
+
+// Middleware to log requests
+router.use((req, res, next) => {
+  console.log(`[${new Date().toISOString()}] ${req.method} ${req.originalUrl}`);
+  next();
+});
+
+const getCommandDetails = (dir) => {
+  const commandDetails = [];
+  const commandFolders = fs.readdirSync(dir);
+
+  for (const folder of commandFolders) {
+    const commandFiles = fs.readdirSync(path.join(dir, folder)).filter(file => file.endsWith('.js'));
+    const commands = commandFiles.map(file => path.basename(file, '.js'));
+
+    if (commands.length > 0) {
+      commandDetails.push({
+        category: folder,
+        commands: commands,
+      });
+    }
+  }
+  return commandDetails;
 };
 
-// Make the HTTP GET request
-const req = http.request(options, (res) => {
-    let data = '';
-
-    // Listen for data chunks
-    res.on('data', (chunk) => {
-        data += chunk;
-    });
-
-    // On end of response, parse and log the data
-    res.on('end', () => {
-        const commandDetails = JSON.parse(data).commandDetails;
-        commandDetails.forEach(category => {
-            console.log(`Category: ${category.category}`);
-            console.log(`Commands: ${category.commands.join(', ')}`);
-        });
-    });
+router.get('/commands', (req, res) => {
+  const commandDetails = getCommandDetails(path.join(__dirname, '../../commands'));
+  res.json({ commandDetails });
 });
 
-// Handle request errors
-req.on('error', (error) => {
-    console.error(`Error: ${error.message}`);
-});
-
-// End the request
-req.end();
+module.exports = router;
 ```
 
 #### Example Request
@@ -121,9 +125,29 @@ http://localhost:3000/api/v1/commands
 4. Send the request.
 5. View the response in JSON format, showing the command categories and the commands within each category.
 
-By following these steps, you can easily retrieve and display the data.
-
 ---
+
+## Dashboard Setup Instructions
+To set up the Discord Community Bot's Dashboard, follow these steps:
+
+1. **Install Dependencies:**
+   ```sh
+   npm install
+   ```
+
+2. **Rename** `example.config.json` to `config.json` and enter your `base api url`.
+
+3. **Build the nextjs project:**
+   ```sh
+   npm run build
+   ```
+
+4. **Start the dashboard:**
+   ```sh
+   npm run start
+   ```
+
+> If you disable the REST API in the config.json, the dashboard won't be able to fetch the stats & commands.
 
 ## Contributing
 Contributions to this project are welcome! If you'd like to contribute, please fork the repository and submit a pull request with your changes.
