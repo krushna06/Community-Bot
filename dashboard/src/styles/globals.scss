@@ -39,7 +39,7 @@ body {
 
 ::-webkit-scrollbar-thumb {
   background: #888;
-  border-radius: 5px;
+  border-radius: 30px;
 }
 
 .p-color {
@@ -65,7 +65,7 @@ body {
   background-color: #1111128b;
   border: 1px solid rgba(255, 255, 255, 0.1);
   backdrop-filter: blur(5px);
-  border-radius: 5px;
+  border-radius: 20px;
   transition: 0.2s all ease-in-out;
 }
 
