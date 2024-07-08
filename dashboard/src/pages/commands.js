@@ -1,11 +1,30 @@
+import { useState, useEffect } from 'react';
 import Head from "next/head";
-
 import Navbar from "@/components/Navbar";
 import Footer from "@/components/Footer";
-
 import { motion } from "framer-motion";
+import config from '../../config.json';
 
 export default function Commands() {
+  const [commandDetails, setCommandDetails] = useState([]);
+
+  useEffect(() => {
+    const fetchCommands = async () => {
+      try {
+        const response = await fetch(`${config.base_api_url}/commands`);
+        if (!response.ok) {
+          throw new Error('Failed to fetch data');
+        }
+        const data = await response.json();
+        setCommandDetails(data.commandDetails);
+      } catch (error) {
+        console.error('Error fetching command details:', error);
+      }
+    };
+
+    fetchCommands();
+  }, []);
+
   return (
     <motion.div
       initial={{
@@ -30,124 +49,30 @@ export default function Commands() {
               ⚡ Commands
             </label>
           </header>
-          <input type="radio" name="accordion" id="cb1" />
-          <section className="box">
-            <label className="box-title p-color" htmlFor="cb1">
-              Soon
-            </label>
-            <label className="box-close" htmlFor="acc-close"></label>
-            <div className="box-content p-color">
-              <ul>
-                <li>
-                  <kbd>$command1</kbd> -{" "}
-                  <span className="p-color">Description of command</span>
-                </li>
-                <li>
-                  <kbd>$command2</kbd> -{" "}
-                  <span className="p-color">Description of command</span>
-                </li>
-                <li>
-                  <kbd>$command3</kbd> -{" "}
-                  <span className="p-color">Description of command</span>
-                </li>
-              </ul>
-            </div>
-          </section>
-          <input type="radio" name="accordion" id="cb2" />
-          <section className="box">
-            <label className="box-title p-color" htmlFor="cb2">
-              Soon
-            </label>
-            <label className="box-close" htmlFor="acc-close"></label>
-            <div className="box-content p-color">
-              <ul>
-                <li>
-                  <kbd>$command1</kbd> -{" "}
-                  <span className="p-color">Description of command</span>
-                </li>
-                <li>
-                  <kbd>$command2</kbd> -{" "}
-                  <span className="p-color">Description of command</span>
-                </li>
-                <li>
-                  <kbd>$command3</kbd> -{" "}
-                  <span className="p-color">Description of command</span>
-                </li>
-              </ul>
-            </div>
-          </section>
-          <input type="radio" name="accordion" id="cb3" />
-          <section className="box">
-            <label className="box-title p-color" htmlFor="cb3">
-              Soon
-            </label>
-            <label className="box-close" htmlFor="acc-close"></label>
-            <div className="box-content p-color">
-              <ul>
-                <li>
-                  <kbd>$command1</kbd> -{" "}
-                  <span className="p-color">Description of command</span>
-                </li>
-                <li>
-                  <kbd>$command2</kbd> -{" "}
-                  <span className="p-color">Description of command</span>
-                </li>
-                <li>
-                  <kbd>$command3</kbd> -{" "}
-                  <span className="p-color">Description of command</span>
-                </li>
-              </ul>
-            </div>
-          </section>
-
-          <input type="radio" name="accordion" id="cb4" />
-          <section className="box">
-            <label className="box-title p-color" htmlFor="cb4">
-              Soon
-            </label>
-            <label className="box-close" htmlFor="acc-close"></label>
-            <div className="box-content p-color">
-              <ul>
-                <li>
-                  <kbd>$command1</kbd> -{" "}
-                  <span className="p-color">Description of command</span>
-                </li>
-                <li>
-                  <kbd>$command2</kbd> -{" "}
-                  <span className="p-color">Description of command</span>
-                </li>
-                <li>
-                  <kbd>$command3</kbd> -{" "}
-                  <span className="p-color">Description of command</span>
-                </li>
-              </ul>
-            </div>
-          </section>
-
-          <input type="radio" name="accordion" id="cb5" />
-          <section className="box">
-            <label className="box-title p-color" htmlFor="cb5">
-              Soon
-            </label>
-            <label className="box-close" htmlFor="acc-close"></label>
-            <div className="box-content p-color">
-              <ul>
-                <li>
-                  <kbd>$command1</kbd> -{" "}
-                  <span className="p-color">Description of command</span>
-                </li>
-                <li>
-                  <kbd>$command2</kbd> -{" "}
-                  <span className="p-color">Description of command</span>
-                </li>
-                <li>
-                  <kbd>$command3</kbd> -{" "}
-                  <span className="p-color">Description of command</span>
-                </li>
-              </ul>
-            </div>
-          </section>
-
+          {commandDetails.length > 0 ? (
+            commandDetails.map((category, index) => (
+              <div key={index}>
+                <input type="radio" name="accordion" id={`cb${index + 1}`} />
+                <section className="box">
+                  <label className="box-title p-color" htmlFor={`cb${index + 1}`}>
+                    {category.category}
+                  </label>
+                  <label className="box-close" htmlFor="acc-close"></label>
+                  <div className="box-content p-color">
+                    <ul>
+                      {category.commands.map((command, cmdIndex) => (
+                        <li key={cmdIndex}>
+                          <kbd>/{command}</kbd>{" "}
+                        </li>
+                      ))}
+                    </ul>
+                  </div>
+                </section>
+              </div>
+            ))
+          ) : (
+            <p>Loading commands...</p>
+          )}
           <input type="radio" name="accordion" id="acc-close" />
         </nav>
       </section>
