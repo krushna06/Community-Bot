@@ -1,8 +1,11 @@
 const express = require('express');
+const cors = require('cors');
 const fs = require('fs');
 const path = require('path');
 
 const router = express.Router();
+
+router.use(cors());
 
 // Middleware to log requests
 router.use((req, res, next) => {

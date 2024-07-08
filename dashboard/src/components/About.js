@@ -1,6 +1,26 @@
-import Link from "next/link";
+import { useState, useEffect } from 'react';
+import Link from 'next/link';
 
 const About = () => {
+  const [totalCommands, setTotalCommands] = useState(null);
+
+  useEffect(() => {
+    const fetchTotalCommands = async () => {
+      try {
+        const response = await fetch('https://3000-krushna06-communitybot-bzxbi6ke8oa.ws-us115.gitpod.io/api/v1/commands');
+        if (!response.ok) {
+          throw new Error('Failed to fetch data');
+        }
+        const data = await response.json();
+        setTotalCommands(data.totalCount);
+      } catch (error) {
+        console.error('Error fetching total commands:', error);
+      }
+    };
+
+    fetchTotalCommands();
+  }, []);
+
   return (
     <>
       <section className="about-section" id="about-section">
@@ -19,7 +39,7 @@ const About = () => {
             <div>
               <h4 className="h-color">✉️ Rest API</h4>
               <p className="p-color">
-              The REST API provides information about the commands available in the Discord bot.
+                The REST API provides information about the commands available in the Discord bot.
               </p>
               <hr />
             </div>
@@ -48,7 +68,7 @@ const About = () => {
             <p className="p-color">Total Users</p>
           </div>
           <div className="about-stats-card">
-            <h4 className="h-color">375k+</h4>
+            <h4 className="h-color">{totalCommands !== null ? `${totalCommands}+` : 'Loading...'}</h4>
             <p className="p-color">Total Commands</p>
           </div>
         </section>
