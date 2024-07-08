@@ -1,0 +1,74 @@
+@import url("https://fonts.googleapis.com/css2?family=Poppins:wght@100;200;300;400;500;600;700;800;900&display=swap");
+
+* {
+  padding: 0;
+  margin: 0;
+  scroll-behavior: smooth;
+  -webkit-scroll-behavior: smooth;
+}
+
+body {
+  font-family: "Poppins", sans-serif;
+  width: 97%;
+  margin: auto !important;
+  background-color: rgb(8, 8, 8);
+  animation: bodyFadeIn 1.2s ease-in-out;
+  -webkit-tap-highlight-color: #08080800;
+  background-image: radial-gradient(#444df73f 0.5px, transparent 0.5px),
+    radial-gradient(#444df7c4 0.5px, rgb(8, 8, 8) 0.5px);
+  background-size: 20px 20px;
+  background-position: 0 0, 10px 10px;
+}
+
+@keyframes bodyFadeIn {
+  0% {
+    opacity: 0;
+  }
+  100% {
+    opacity: 100%;
+  }
+}
+
+::-webkit-scrollbar {
+  width: 8px;
+}
+
+::-webkit-scrollbar-track {
+  background: #080808;
+}
+
+::-webkit-scrollbar-thumb {
+  background: #888;
+  border-radius: 5px;
+}
+
+.p-color {
+  color: #bfbfbf;
+}
+
+.h-color {
+  color: #fff;
+}
+
+.no-decoration {
+  text-decoration: none;
+}
+
+.btn {
+  font-family: inherit;
+  padding: 0.6em 1.3em;
+  cursor: pointer;
+  font-weight: normal;
+  text-decoration: none;
+  margin: 0.3rem;
+  font-size: 18px;
+  background-color: #1111128b;
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  backdrop-filter: blur(5px);
+  border-radius: 5px;
+  transition: 0.2s all ease-in-out;
+}
+
+.btn:hover {
+  background-color: #19191a8b;
+}
