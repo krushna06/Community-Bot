@@ -1,3 +1,4 @@
 config/config.json
 node_modules
 .gitpod.yml
+package-lock.json
