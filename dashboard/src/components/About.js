@@ -3,22 +3,24 @@ import Link from 'next/link';
 
 const About = () => {
   const [totalCommands, setTotalCommands] = useState(null);
+  const [totalServers, setTotalServers] = useState(null);
 
   useEffect(() => {
-    const fetchTotalCommands = async () => {
+    const fetchStats = async () => {
       try {
-        const response = await fetch('https://3000-krushna06-communitybot-bzxbi6ke8oa.ws-us115.gitpod.io/api/v1/commands');
+        const response = await fetch('https://3000-krushna06-communitybot-bzxbi6ke8oa.ws-us115.gitpod.io/api/v1/stats');
         if (!response.ok) {
           throw new Error('Failed to fetch data');
         }
         const data = await response.json();
-        setTotalCommands(data.totalCount);
+        setTotalCommands(data.totalCommands);
+        setTotalServers(data.totalServers);
       } catch (error) {
-        console.error('Error fetching total commands:', error);
+        console.error('Error fetching stats:', error);
       }
     };
 
-    fetchTotalCommands();
+    fetchStats();
   }, []);
 
   return (
@@ -60,12 +62,8 @@ const About = () => {
 
         <section className="about-stats">
           <div className="about-stats-card">
-            <h4 className="h-color">17k+</h4>
+            <h4 className="h-color">{totalServers !== null ? `${totalServers}+` : 'Loading...'}</h4>
             <p className="p-color">Total Servers</p>
-          </div>
-          <div className="about-stats-card">
-            <h4 className="h-color">94k+</h4>
-            <p className="p-color">Total Users</p>
           </div>
           <div className="about-stats-card">
             <h4 className="h-color">{totalCommands !== null ? `${totalCommands}+` : 'Loading...'}</h4>

@@ -6,6 +6,7 @@ const { token, clientId, REST_API } = require('./config/config.json');
 const logger = require('./utils/logger');
 
 const client = new Client({ intents: [GatewayIntentBits.Guilds] });
+
 // Load events
 const loadEvents = (dir) => {
     const eventFiles = fs.readdirSync(path.join(__dirname, dir)).filter(file => file.endsWith('.js'));
@@ -20,6 +21,7 @@ const loadEvents = (dir) => {
 };
 loadEvents('./events/client');
 loadEvents('./events/guild');
+
 // Load commands
 client.commands = new Collection();
 const commands = [];
@@ -32,6 +34,7 @@ for (const folder of commandFolders) {
         commands.push(command.data.toJSON());
     }
 }
+
 const rest = new REST({ version: '10' }).setToken(token);
 (async () => {
     try {
@@ -45,6 +48,7 @@ const rest = new REST({ version: '10' }).setToken(token);
         logger.error(error);
     }
 })();
+
 client.login(token).then(() => {
     logger.info(`Logged in as ${client.user.tag}`);
 });
@@ -53,9 +57,16 @@ if (REST_API) {
     // Set up the Express server
     const app = express();
     const port = 3000;
-    // Use the stats route
+
+    // Store the Discord client in app locals
+    app.locals.client = client;
+
+    // Use the routes
     const statsRoute = require('./api/v1/stats');
+    const commandsRoute = require('./api/v1/commands');
     app.use('/api/v1', statsRoute);
+    app.use('/api/v1', commandsRoute);
+
     app.listen(port, () => {
         logger.info(`API server running on http://localhost:${port}`);
     });

@@ -13,24 +13,27 @@ router.use((req, res, next) => {
   next();
 });
 
-const getTotalCommands = (dir) => {
-  let totalCount = 0;
+const getCommandDetails = (dir) => {
+  const commandDetails = [];
   const commandFolders = fs.readdirSync(dir);
+
   for (const folder of commandFolders) {
     const commandFiles = fs.readdirSync(path.join(dir, folder)).filter(file => file.endsWith('.js'));
-    totalCount += commandFiles.length;
+    const commands = commandFiles.map(file => path.basename(file, '.js'));
+
+    if (commands.length > 0) {
+      commandDetails.push({
+        category: folder,
+        commands: commands,
+      });
+    }
   }
-  return totalCount;
+  return commandDetails;
 };
 
-const getTotalServers = (client) => {
-  return client.guilds.cache.size;
-};
-
-router.get('/stats', (req, res) => {
-  const totalCommands = getTotalCommands(path.join(__dirname, '../../commands'));
-  const totalServers = getTotalServers(req.app.locals.client);
-  res.json({ totalCommands, totalServers });
+router.get('/commands', (req, res) => {
+  const commandDetails = getCommandDetails(path.join(__dirname, '../../commands'));
+  res.json({ commandDetails });
 });
 
 module.exports = router;
