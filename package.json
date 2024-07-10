@@ -18,8 +18,10 @@
     "discord.js": "^14.15.3",
     "express": "^4.19.2",
     "fs": "^0.0.1-security",
+    "generate-password": "^1.7.1",
     "moment-timezone": "^0.5.45",
     "path": "^0.12.7",
+    "qrcode": "^1.5.3",
     "sqlite3": "^5.1.7",
     "weather-js": "^2.0.0",
     "winston": "^3.13.0"
