@@ -135,7 +135,7 @@ To set up the Discord Community Bot's Dashboard, follow these steps:
    npm install
    ```
 
-2. **Rename** `example.config.json` to `config.json` and enter your `base api url`.
+2. Enter your `base api url` in `dashboard/config.json` or `dashboard/.env`.
 
 3. **Build the nextjs project:**
    ```sh
