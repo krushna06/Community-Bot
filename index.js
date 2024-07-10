@@ -5,7 +5,7 @@ const express = require('express');
 const { token, clientId, REST_API } = require('./config/config.json');
 const logger = require('./utils/logger');
 
-const client = new Client({ intents: [GatewayIntentBits.Guilds] });
+const client = new Client({ intents: [GatewayIntentBits.Guilds, GatewayIntentBits.GuildMessages] });
 
 // Load events
 const loadEvents = (dir) => {

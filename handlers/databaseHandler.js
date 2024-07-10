@@ -26,4 +26,31 @@ db.run(`
     }
 });
 
+// Create the afk_users table if it doesn't exist
+db.run(`
+    CREATE TABLE IF NOT EXISTS afk_users (
+        user_id TEXT PRIMARY KEY,
+        reason TEXT,
+        timestamp INTEGER
+    )
+`, (err) => {
+    if (err) {
+        logger.error('Could not create afk_users table', err);
+    }
+});
+
+// Create the afk_pings table if it doesn't exist
+db.run(`
+    CREATE TABLE IF NOT EXISTS afk_pings (
+        id INTEGER PRIMARY KEY AUTOINCREMENT,
+        user_id TEXT NOT NULL,
+        pinger_tag TEXT NOT NULL,
+        message_link TEXT NOT NULL
+    )
+`, (err) => {
+    if (err) {
+        logger.error('Could not create afk_pings table', err);
+    }
+});
+
 module.exports = db;
